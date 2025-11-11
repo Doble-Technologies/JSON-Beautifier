@@ -1,7 +1,18 @@
 use eframe::egui;
 
 fn main() -> eframe::Result<()> {
-    let options = eframe::NativeOptions::default();
+    let icon_data = eframe::icon_data::from_png_bytes(
+            include_bytes!("../resources/dti.png")
+        )
+        .expect("Failed to load icon");
+
+    let options = eframe::NativeOptions {
+        viewport: egui::ViewportBuilder {
+            icon: Some(Arc::new(icon_data)),
+            ..Default::default()
+        },
+        ..Default::default()
+    };
 
     eframe::run_native(
         "Doble Technologies - Chat Application",
