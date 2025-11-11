@@ -1,4 +1,5 @@
 use eframe::egui;
+use std::sync::Arc;
 
 fn main() -> eframe::Result<()> {
     let icon_data = eframe::icon_data::from_png_bytes(
