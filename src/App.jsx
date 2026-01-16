@@ -4,48 +4,50 @@ import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [formatedStr, setFormatedStr] = useState("");
+  const [dataStr, setDataStr] = useState("");
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+  async function beautify() {
+    //   name = JSON.stringify(name,null));
+    setFormatedStr(await invoke("beautify", { dataStr}));
   }
 
-  return (
+    function handleChange(e) {
+        setDataStr(e.target.value);
+    }
+
+    return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+        <form >
+            <div className="row">
+                    <input style={{minHeight: '75vh'}} type="text" onChange={handleChange} id={"left"} value={dataStr} className="column"></input>
+                <input  style={{minHeight: '75vh'}} id={"right"} value={formatedStr} name={"rightText"} className="column"></input>
+            </div>
+        </form>
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+        <div className={"bottom-bar"}>
+                <input type={"button"} onClick={beautify} />
+            </div>
     </main>
+
   );
 }
 
+// <h1>Beautify </h1>
+// <form
+//     className="row"
+//     onSubmit={(e) => {
+//         e.preventDefault();
+//         beautify();
+//     }}
+// >
+//     <input
+//         id="greet-input"
+//         onChange={(e) => setDataStr(e.currentTarget.value)}
+//         placeholder="STRING GOES HERE"
+//     />
+//     <button type="submit">Format</button>
+//     {/*<button onClick={()=>setDataStr("")} type="submit">Clear</button>*/}
+// </form>
+// <p>{formatedStr}</p>
 export default App;
