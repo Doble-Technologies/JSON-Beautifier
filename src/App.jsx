@@ -9,7 +9,15 @@ function App() {
 
   async function beautify() {
     //   name = JSON.stringify(name,null));
-    setFormatedStr(await invoke("beautify", { dataStr}));
+      let updatedStr =await invoke("beautify", { dataStr})
+
+      console.log("Updated STR: "+ updatedStr)
+      console.log("--------")
+      console.error(updatedStr)
+
+
+
+      setFormatedStr(updatedStr);
   }
 
     function handleChange(e) {
@@ -20,8 +28,8 @@ function App() {
     <main className="container">
         <form >
             <div className="row">
-                    <input style={{minHeight: '75vh'}} type="text" onChange={handleChange} id={"left"} value={dataStr} className="column"></input>
-                <input  style={{minHeight: '75vh'}} id={"right"} value={formatedStr} name={"rightText"} className="column"></input>
+                <textarea style={{minHeight: '75vh'}}  onChange={handleChange} id={"left"} value={dataStr} className="column"></textarea>
+                <textarea  style={{minHeight: '75vh'}} id={"right"} value={formatedStr} name={"rightText"} className="column"></textarea>
             </div>
         </form>
 
