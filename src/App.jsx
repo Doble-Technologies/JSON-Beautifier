@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
@@ -7,17 +7,24 @@ function App() {
   const [formatedStr, setFormatedStr] = useState("");
   const [dataStr, setDataStr] = useState("");
 
+    useEffect(() => {
+        //Sanitize dataStr
+
+        //Runs only on the first render
+    }, [dataStr]);
+
+
   async function beautify() {
     //   name = JSON.stringify(name,null));
-      let updatedStr =await invoke("beautify", { dataStr})
+      // ” is a smart quote " is the right one
+      if(dataStr !==""){
+          setDataStr(dataStr.replace('“', '"'))
+          console.log("I MADE THE DEAL GOD ", dataStr.replace('“', '"'))
 
-      console.log("Updated STR: "+ updatedStr)
-      console.log("--------")
-      console.error(updatedStr)
+          let updatedStr =await invoke("beautify", { dataStr: dataStr, fileType: "json"})
+          setFormatedStr(updatedStr);
+      }
 
-
-
-      setFormatedStr(updatedStr);
   }
 
     function handleChange(e) {
@@ -34,7 +41,14 @@ function App() {
         </form>
 
         <div className={"bottom-bar"}>
-                <input type={"button"} onClick={beautify} />
+                <input value={"Beautify"} type={"button"} onClick={beautify} />
+                <select name="type" id="type">
+                    <option value="json">Json</option>
+                    <option value="toml">TOML</option>
+                    <option value="markdown">Markdown</option>
+                    <option value="yml">Yaml</option>
+                    <option value="xml">XML</option>
+                </select>
             </div>
     </main>
 
