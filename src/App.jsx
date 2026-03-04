@@ -6,21 +6,12 @@ import "./App.css";
 function App() {
   const [formatedStr, setFormatedStr] = useState("");
   const [dataStr, setDataStr] = useState("");
-
-    useEffect(() => {
-        //Sanitize dataStr
-
-        //Runs only on the first render
-    }, [dataStr]);
-
-
+  
   async function beautify() {
     //   name = JSON.stringify(name,null));
       // ” is a smart quote " is the right one
       if(dataStr !==""){
           setDataStr(dataStr.replace('“', '"'))
-          console.log("I MADE THE DEAL GOD ", dataStr.replace('“', '"'))
-
           let updatedStr =await invoke("beautify", { dataStr: dataStr, fileType: "json"})
           setFormatedStr(updatedStr);
       }
@@ -54,22 +45,4 @@ function App() {
 
   );
 }
-
-// <h1>Beautify </h1>
-// <form
-//     className="row"
-//     onSubmit={(e) => {
-//         e.preventDefault();
-//         beautify();
-//     }}
-// >
-//     <input
-//         id="greet-input"
-//         onChange={(e) => setDataStr(e.currentTarget.value)}
-//         placeholder="STRING GOES HERE"
-//     />
-//     <button type="submit">Format</button>
-//     {/*<button onClick={()=>setDataStr("")} type="submit">Clear</button>*/}
-// </form>
-// <p>{formatedStr}</p>
 export default App;
