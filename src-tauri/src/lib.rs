@@ -1,4 +1,3 @@
-use serde_json::{json, Value,Error};// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 use quick_xml::events::Event;
 use quick_xml::{Reader, Writer};
 use std::io::Cursor;
@@ -9,15 +8,12 @@ pub fn json_beauty(data_str: &str) -> String {
         Ok(value) => value,
         Err(e) => return format!("Err: {}",e).to_string(),
     };
-    // Pretty-print JSON value
-    let pretty: String = match serde_json::to_string_pretty(&value).map_err(|e| format!("Error formatting JSON: {}", e)){
-        Ok(value) => return value,
-        Err(e) => return format!("Err: {}",e).to_string(),
+
+    //TODO: Update to match xml error handling
+    return match serde_json::to_string_pretty(&value).map_err(|e| format!("Error formatting JSON: {}", e)) {
+        Ok(value) => value,
+        Err(e) => format!("Err: {}", e).to_string(),
     };
-
-    println!("{}", pretty);
-
-    pretty
 }
 
 pub fn xml_beauty(data_str: &str) -> Result<String, quick_xml::Error> {
@@ -37,7 +33,6 @@ pub fn xml_beauty(data_str: &str) -> Result<String, quick_xml::Error> {
 
     let bytes = writer.into_inner().into_inner();
     Ok(String::from_utf8(bytes).expect("Valid UTF-8"))
-
 }
 
 #[tauri::command]
@@ -45,10 +40,9 @@ fn beautify(data_str: &str, file_type: &str) -> String {
     match file_type {
         "json" => return json_beauty(data_str),
         "xml" => {
-            // return xml_beauty(data_str)
-            return match xml_beauty(data_str) {
-                Ok(pretty) => (pretty),
-                Err(e) => (e.to_string()),
+            match xml_beauty(data_str) {
+                Ok(pretty) => pretty,
+                Err(e) => e.to_string(),
             }
         },
         // "yaml" | "yml" => return yaml_beauty(data_str),
