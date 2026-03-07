@@ -16,12 +16,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #f6f6f6;
     background-color: #2f2f2f;
   }
 
-  a:hover {
-    color: #24c8db;
+  xyz:hover {
+    background-color: #24c8db;
   }
 }
 
@@ -29,13 +28,24 @@
   padding-top: 5vh;
   display: flex;
 }
+
 .column {
   flex: 50%;
   border-radius: 10px;
   /*border: 2px solid #73AD21;*/
   padding: 20px;
   margin: 20px;
+  background-color: #f8f8f8;
 }
 .bottom-bar {
   margin-left: 2vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
 }
+
+/*.bottom-item {*/
+/*  margin-right: 2vw;*/
+/*}*/
+
+

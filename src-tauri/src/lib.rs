@@ -16,11 +16,17 @@ pub fn json_beauty(data_str: &str) -> String {
     pretty
 }
 
+pub fn xml_beauty(data_str: &str) -> String {
+    // Format the input string
+
+    "pretty".to_string()
+}
+
 #[tauri::command]
 fn beautify(data_str: &str, file_type: &str) -> String {
     match file_type {
         "json" => return json_beauty(data_str),
-        // "xml" => return xml_beauty(data_str),
+        "xml" => return xml_beauty(data_str),
         // "yaml" | "yml" => return yaml_beauty(data_str),
         _ => data_str.to_string(),
     }
