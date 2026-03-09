@@ -6,13 +6,13 @@ pub fn json_beauty(data_str: &str) -> String {
     // Format the input string
     let value: serde_json::Value= match serde_json::from_str(data_str) {
         Ok(value) => value,
-        Err(e) => return format!("Err: {}",e).to_string(),
+        Err(_e) => return format!("{}",data_str).to_string(),
     };
 
     //TODO: Update to match xml error handling
     return match serde_json::to_string_pretty(&value).map_err(|e| format!("Error formatting JSON: {}", e)) {
         Ok(value) => value,
-        Err(e) => format!("Err: {}", e).to_string(),
+        Err(_e) => format!("{}", data_str).to_string(),
     };
 }
 

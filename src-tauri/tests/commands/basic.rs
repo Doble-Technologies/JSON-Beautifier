@@ -12,7 +12,7 @@ fn json_beauty_02() {
 
 #[test]
 fn json_beauty_fail_01() {
-    assert_eq!(json_beauty(""), "Err: EOF while parsing a value at line 1 column 0");
+    assert_eq!(json_beauty("abc"), "abc");
 }
 
 #[test]
