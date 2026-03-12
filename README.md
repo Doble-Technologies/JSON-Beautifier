@@ -28,7 +28,7 @@ To use the Data Beautifier, simply open the app and drag and paste the data into
 
 ## Contributing
 
-Contributions are welcome! I am always looking to add more file types/expand functionality. To contribute, please fork this repository and submit a pull request with your changes.
+Contributions are welcome! I am always looking to add more file types/expand functionality. To contribute, please fork this repository and submit a pull request with your changes. Please make sure to update the Rust unit tests if any additions/changes is made to that section.
 
 ## License
 
