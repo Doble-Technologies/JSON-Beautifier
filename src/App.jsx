@@ -1,5 +1,4 @@
 import { useState,useEffect } from "react";
-import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
@@ -29,8 +28,8 @@ function App() {
                     setFormatedStr(updatedStr);
                     break;
                 }
-                case "toml":{
-                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "toml" });
+                case "sql":{
+                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "sql" });
                     setFormatedStr(updatedStr);
                     break;
                 }
@@ -61,6 +60,15 @@ function App() {
         setFiletype(e.target.value);
     }
 
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(formatedStr);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
+
+
     //Todo: Move to css file after confirming
     const textStyle= {
         height: '75vh',
@@ -83,6 +91,9 @@ function App() {
                 <div className="row">
                     <textarea style={textStyle} onChange={handleChange} id={"left"} value={dataStr}
                               className="column"></textarea>
+                    <div className="divider">
+                        <div className="divider-arrow" id="btnSwap" title="Swap">⇄</div>
+                    </div>
                     <textarea style={textStyle} id={"right"} value={formatedStr} name={"rightText"}
                               className="column"></textarea>
                 </div>
@@ -92,13 +103,13 @@ function App() {
                 <input className={"bottom-item"} value={"Beautify"} type={"button"} onClick={beautify}/>
                 <select onChange={handleType} className={"bottom-item"} name="type" id="filetype">
                     <option value="json">Json</option>
-                    <option value="toml">TOML</option>
+                    <option value="sql">SQL</option>
                     <option value="markdown">Markdown</option>
                     <option value="yml">Yaml</option>
                     <option value="xml">XML</option>
                 </select>
 
-                <input className={"bottom-item"} value={"Copy"} type={"button"} style={{marginLeft: "auto"}} onClick={beautify}/>
+                <input className={"bottom-item"} value={"Copy"} type={"button"} style={{marginLeft: "auto"}} onClick={handleCopy}/>
             </footer>
         </main>
 

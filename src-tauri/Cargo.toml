@@ -23,6 +23,12 @@ tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 quick-xml = "0.39.2"
+serde_yaml = "0.9.34+deprecated"
+beautiful-md = "0.3.3"
+sqlformat = "0.2"
+
+
+
 [[test]]
 name = "basic"
 path = "tests/commands/basic.rs"
