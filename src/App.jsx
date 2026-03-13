@@ -1,75 +1,119 @@
 import { useState,useEffect } from "react";
-import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 function App() {
-  const [formatedStr, setFormatedStr] = useState("");
-  const [dataStr, setDataStr] = useState("");
+    const [formatedStr, setFormatedStr] = useState("");
+    const [dataStr, setDataStr] = useState("");
+    const [fileType, setFiletype] = useState("json");
 
-    useEffect(() => {
-        //Sanitize dataStr
+    async function beautify() {
+        if (dataStr !== "") {
+            const cleanedStr = dataStr
+                .replaceAll('\u201C', '"')  // " (left double quote)
+                .replaceAll('\u201D', '"'); // " (right double quote)
 
-        //Runs only on the first render
-    }, [dataStr]);
+            setDataStr(cleanedStr);
 
 
-  async function beautify() {
-    //   name = JSON.stringify(name,null));
-      // ” is a smart quote " is the right one
-      if(dataStr !==""){
-          setDataStr(dataStr.replace('“', '"'))
-          console.log("I MADE THE DEAL GOD ", dataStr.replace('“', '"'))
+            switch (fileType) {
+                case "json":{
+                    //uses cleanedStr not dataStr due to weird behavior regarding async
+                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "json" });
+                    setFormatedStr(updatedStr);
+                    break;
+                }
+                case "xml":{
+                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "xml" });
+                    setFormatedStr(updatedStr);
+                    break;
+                }
+                case "sql":{
+                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "sql" });
+                    setFormatedStr(updatedStr);
+                    break;
+                }
+                case "yml":{
+                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "yml" });
+                    setFormatedStr(updatedStr);
+                    break;
+                }
+                case "markdown":{
+                    let updatedStr = await invoke("beautify", { dataStr: cleanedStr, fileType: "markdown" });
+                    setFormatedStr(updatedStr);
+                    break;
+                }
+                default:{
+                    break;
+                }
+            }
 
-          let updatedStr =await invoke("beautify", { dataStr: dataStr, fileType: "json"})
-          setFormatedStr(updatedStr);
-      }
+        }
+    }
 
-  }
-
+    //handles main change of text field
     function handleChange(e) {
         setDataStr(e.target.value);
     }
 
-    return (
-    <main className="container">
-        <form >
-            <div className="row">
-                <textarea style={{minHeight: '75vh'}}  onChange={handleChange} id={"left"} value={dataStr} className="column"></textarea>
-                <textarea  style={{minHeight: '75vh'}} id={"right"} value={formatedStr} name={"rightText"} className="column"></textarea>
-            </div>
-        </form>
+    function handleType(e){
+        setFiletype(e.target.value);
+    }
 
-        <div className={"bottom-bar"}>
-                <input value={"Beautify"} type={"button"} onClick={beautify} />
-                <select name="type" id="type">
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(formatedStr);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
+
+
+    //Todo: Move to css file after confirming
+    const textStyle= {
+        height: '75vh',
+        resize: "none",
+        backgroundColor: "#c8d7db",
+        fontSize: '.78rem'//Todo Urgent: Get feedback on height, and font size
+    }
+
+    //On Enter beautify
+    document.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' && e.metaKey) || (e.key === 'Enter' && e.ctrlKey)) {
+            beautify();
+        }
+    });
+
+
+    return (
+        <main className="container">
+            <form>
+                <div className="row">
+                    <textarea style={textStyle} onChange={handleChange} id={"left"} value={dataStr}
+                              className="column"></textarea>
+                    <div className="divider">
+                        <div className="divider-arrow" id="btnSwap" title="Swap">⇄</div>
+                    </div>
+                    <textarea style={textStyle} id={"right"} value={formatedStr} name={"rightText"}
+                              className="column"></textarea>
+                </div>
+            </form>
+
+            <footer className={"bottom-bar"}>
+                <input className={"bottom-item"} value={"Beautify"} type={"button"} onClick={beautify}/>
+                <select onChange={handleType} className={"bottom-item"} name="type" id="filetype">
                     <option value="json">Json</option>
-                    <option value="toml">TOML</option>
+                    <option value="sql">SQL</option>
                     <option value="markdown">Markdown</option>
                     <option value="yml">Yaml</option>
                     <option value="xml">XML</option>
                 </select>
-            </div>
-    </main>
 
-  );
+                <input className={"bottom-item"} value={"Copy"} type={"button"} style={{marginLeft: "auto"}} onClick={handleCopy}/>
+            </footer>
+        </main>
+
+    );
 }
 
-// <h1>Beautify </h1>
-// <form
-//     className="row"
-//     onSubmit={(e) => {
-//         e.preventDefault();
-//         beautify();
-//     }}
-// >
-//     <input
-//         id="greet-input"
-//         onChange={(e) => setDataStr(e.currentTarget.value)}
-//         placeholder="STRING GOES HERE"
-//     />
-//     <button type="submit">Format</button>
-//     {/*<button onClick={()=>setDataStr("")} type="submit">Clear</button>*/}
-// </form>
-// <p>{formatedStr}</p>
 export default App;
