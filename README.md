@@ -1,6 +1,7 @@
 # Data Beautifier
 
 [![Rust Unit Tests](https://github.com/Doble-Technologies/JSON-Beautifier/actions/workflows/release.yml/badge.svg)](https://github.com/Doble-Technologies/JSON-Beautifier/actions/workflows/release.yml)
+[![RepoRanker](https://reporanker.com/badge/John4064/Data-Beautifier)](https://reporanker.com/repos/John4064/Data-Beautifier)
 
 A beautiful, snappy, and lightweight desktop app for formatting JSON, XML, YAML, and other data formats in Rust using the Tauri framework.
 
